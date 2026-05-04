@@ -1,0 +1,55 @@
+/* Columna izquierda: ocupa toda la altura del renglón (junto a la del formulario) */
+.col-login-left {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  min-height: 200px;
+}
+
+@media (min-width: 992px) {
+  .col-login-left {
+    min-height: 100vh;
+  }
+}
+
+/* Contenedor de la foto: rellena la columna; la imagen va absoluta para cubrir bordes */
+.login-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 200px;
+  margin: 0;
+}
+
+@media (min-width: 992px) {
+  .login-hero {
+    flex: 1 1 0;
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+.login-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.login-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(33, 37, 41, 0.35);
+}
+
+@media (min-width: 992px) {
+  .login-hero::after {
+    background: linear-gradient(to right, transparent, rgba(33, 37, 41, 0.45));
+  }
+}
