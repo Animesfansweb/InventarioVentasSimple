@@ -1,0 +1,4 @@
+# Secretos y entorno local (no versionar contraseñas ni claves reales)
+.env
+.env.local
+.env.*.local

@@ -5,7 +5,7 @@ $(function () {
   var $errorUsuario = $("#error-usuario");
   var msgUsuarioVacio = "Ingrese el usuario.";
 
-  /** Quita espacios y saltos de línea del valor y mantiene el cursor lo más cerca posible (pegar, autocompletar, etc.). */
+  // Elimina espacios al pegar o escribir, ajustando la posición del cursor de forma razonable.
   function quitarEspaciosEnCampo(el) {
     var v = el.value;
     if (!/\s/.test(v)) {

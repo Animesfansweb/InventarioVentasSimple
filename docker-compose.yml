@@ -1,10 +1,61 @@
+# -----------------------------------------------------------------------------
+# SOLO DEMOSTRACIÓN
+# Las contraseñas están fijadas en 12345 para que el proyecto arranque sin
+# configuración extra. En un entorno real NO debes:
+#   - dejar claves en el código fuente versionado,
+#   - subir secretos al repositorio,
+#   - reutilizar contraseñas débiles.
+# Usa variables de entorno (p. ej. archivo .env ignorado por Git), Docker
+# secrets o el gestor de secretos de tu plataforma.
+# -----------------------------------------------------------------------------
+# Puertos publicados en el host (cámbialos aquí si chocan con otros servicios):
+#   Web:    http://localhost:8888  (mapeo 8888 -> 80 del contenedor PHP)
+#   MySQL:  localhost:3310       (mapeo 3310 -> 3306 interno; PHP sigue usando mysql:3306)
+# -----------------------------------------------------------------------------
+
 services:
   php:
-    image: php:8.3-apache
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
     container_name: inventario_php
     ports:
-      - "8080:80"
+      - "8888:80"
     volumes:
       - .:/var/www/html
       - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
     working_dir: /var/www/html/public
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_NAME: inventario
+      DB_USER: inventario
+      DB_PASS: "12345"
+
+  mysql:
+    # Si cambias MYSQL_PASSWORD y ves SQLSTATE 1045, el volumen puede tener contraseñas antiguas:
+    # "docker compose down -v" y subir de nuevo, o corregir el usuario inventario en MySQL como root.
+    image: mysql:8.0
+    container_name: inventario_mysql
+    environment:
+      MYSQL_DATABASE: inventario
+      MYSQL_USER: inventario
+      MYSQL_PASSWORD: "12345"
+      MYSQL_ROOT_PASSWORD: "12345"
+    ports:
+      - "3310:3306"
+    volumes:
+      - inventario_mysql_data:/var/lib/mysql
+      - ./database/inventario.sql:/docker-entrypoint-initdb.d/01-inventario.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 25s
+
+volumes:
+  inventario_mysql_data:

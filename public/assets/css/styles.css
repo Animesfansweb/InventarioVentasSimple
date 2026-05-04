@@ -1,4 +1,4 @@
-/* Columna izquierda: ocupa toda la altura del renglón (junto a la del formulario) */
+/* Columna izquierda del login: altura completa en pantallas grandes. */
 .col-login-left {
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   }
 }
 
-/* Contenedor de la foto: rellena la columna; la imagen va absoluta para cubrir bordes */
+/* Contenedor de la imagen hero: posición absoluta para cubrir el área con object-fit. */
 .login-hero {
   position: relative;
   overflow: hidden;
@@ -52,4 +52,11 @@
   .login-hero::after {
     background: linear-gradient(to right, transparent, rgba(33, 37, 41, 0.45));
   }
+}
+
+/* Resalta el ítem activo del menú principal. */
+.navbar-dark .navbar-nav .nav-link.active {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
 }

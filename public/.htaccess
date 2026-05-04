@@ -1,0 +1,2 @@
+# UTF-8 por defecto en respuestas (Apache). Coincide con <meta charset="UTF-8"> y utf8mb4 en MySQL.
+AddDefaultCharset utf-8
